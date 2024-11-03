@@ -11,7 +11,7 @@ Welcome to the **Chat App Framework** repository! This project aims to provide a
   - [Running the Application](#running-the-application)
 - [Usage](#usage)
 - [Project Structure](#project-structure)
-- [MVC Architecture](#MVC Architecture)
+- [MVC Architecture](#mvc-architecture)
 - [License](#license)
 
 ## Features
