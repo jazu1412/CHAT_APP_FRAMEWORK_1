@@ -113,7 +113,7 @@ The Chat App Framework follows the Model-View-Controller (MVC) design pattern to
 - ![Application screenshot](/a1.png)
 - - ![Application screenshot](/a2.png)
   - - ![Application screenshot](/a3.png)
-    - - ![Application screenshot](/a3.png)
+    - - ![Application screenshot](/a4.png)
 
 
 
