@@ -110,7 +110,10 @@ The Chat App Framework follows the Model-View-Controller (MVC) design pattern to
   - `CORSFilter.java`: Handles cross-origin requests to enable communication between frontend and backend.
   - `ChatConfiguration.java`: Configures server endpoints and servlet mappings to facilitate the flow of data between the client and server.
  
-- ![Alt text](/a1.png)
+- ![Application screenshot](/a1.png)
+- - ![Application screenshot](/a2.png)
+  - - ![Application screenshot](/a3.png)
+    - - ![Application screenshot](/a3.png)
 
 
 
