@@ -12,6 +12,7 @@ Welcome to the **Chat App Framework** repository! This project aims to provide a
 - [Usage](#usage)
 - [Project Structure](#project-structure)
 - [MVC Architecture](#mvc-architecture)
+  - [Files Involved in MVC](#files-involved-in-mvc)
 - [License](#license)
 
 ## Features
@@ -85,5 +86,31 @@ To get a local copy up and running, follow these steps:
 - **public/**: Static files for the web application.
 
 ## MVC Architecture
+The Chat App Framework follows the Model-View-Controller (MVC) design pattern to ensure a clear separation of concerns, which helps with maintainability and scalability.
+
+- **Model (M)**: 
+  - The **model** represents the data layer of the application. In this project, it includes data classes and objects that handle the state of the chat (e.g., users, chat rooms, and messages). It is implemented primarily on the server-side using Java.
+
+- **View (V)**: 
+  - The **view** represents the user interface. In this project, the view is implemented using **React** in the frontend folder. It provides a user-friendly interface for users to interact with the chat application. This includes components like chat boxes, user lists, and message forms.
+
+- **Controller (C)**: 
+  - The **controller** acts as an intermediary between the model and the view. In this project, the backend controllers are implemented in Java using servlets. These controllers handle incoming requests, update the model, and send responses back to the view. They also manage WebSocket communication to handle real-time messaging between clients.
+
+## Files Involved in MVC
+- **Model (M)**:
+  - `ChatWebSocket.java`: Manages the state of chat sessions, user connections, and messages.
+  - `ChatApplication.java`: Initializes key components and manages the overall application lifecycle.
+
+- **View (V)**:
+  - `frontend/src/App.js`: The main entry point of the React application, managing the UI and rendering the chat interface.
+  - `frontend/src/components/MessageForm.js`: Component for inputting and sending messages.
+  - `frontend/src/components/ChatBox.js`: Component that displays messages in the chat.
+
+- **Controller (C)**:
+  - `ChatWebSocketServlet.java`: Acts as a controller that manages WebSocket connections, handles incoming messages, and communicates with the model.
+  - `CORSFilter.java`: Handles cross-origin requests to enable communication between frontend and backend.
+  - `ChatConfiguration.java`: Configures server endpoints and servlet mappings to facilitate the flow of data between the client and server.
+
 
 
