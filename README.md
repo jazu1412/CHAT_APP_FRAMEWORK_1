@@ -82,8 +82,6 @@ To get a local copy up and running, follow these steps:
 ## Project Structure
 - **backend/**: Contains the server-side code implemented in Java, using servlets and WebSocket.
 - **frontend/**: Contains the React client application.
-- **config/**: Configuration files for the backend server.
-- **public/**: Static files for the web application.
 
 ## MVC Architecture
 The Chat App Framework follows the Model-View-Controller (MVC) design pattern to ensure a clear separation of concerns, which helps with maintainability and scalability.
