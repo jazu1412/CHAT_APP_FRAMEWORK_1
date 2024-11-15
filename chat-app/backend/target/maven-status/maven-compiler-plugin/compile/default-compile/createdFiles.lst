@@ -1,6 +1,0 @@
-com/chatapp/ChatWebSocketCreator.class
-com/chatapp/ChatConfiguration.class
-com/chatapp/ChatWebSocket.class
-com/chatapp/CORSFilter.class
-com/chatapp/ChatApplication.class
-com/chatapp/ChatWebSocketServlet.class
