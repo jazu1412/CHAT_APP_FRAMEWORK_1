@@ -10,7 +10,9 @@ This is a full-stack chat application with automated CI/CD pipeline using Circle
 - Artifact storage
 - Test results reporting
 
-## Component
+## Components
+
+
 
 ### Backend
 - Java-based WebSocket server
