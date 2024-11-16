@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './App.css';
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
     scrollToBottom();
   }, [messages]);
 
-  const connectWebSocket = () => {
+  const connectWebSocket = useCallback(() => {
     // Only create a new connection if one doesn't exist
     if (websocket.current?.readyState === WebSocket.OPEN) {
       return;
@@ -75,7 +75,7 @@ function App() {
         reconnectTimeout.current = setTimeout(connectWebSocket, 3000);
       }
     }
-  };
+  }, []);
 
   useEffect(() => {
     connectWebSocket();
@@ -88,7 +88,7 @@ function App() {
         clearTimeout(reconnectTimeout.current);
       }
     };
-  }, []);
+  }, [connectWebSocket]);
 
   const sendMessage = (e) => {
     e.preventDefault();
