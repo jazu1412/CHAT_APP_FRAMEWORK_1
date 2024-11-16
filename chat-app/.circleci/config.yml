@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  node: circleci/node@5.1.0
+
 jobs:
   build-backend:
     docker:
@@ -34,12 +37,11 @@ jobs:
       - store_artifacts:
           path: backend/target/*.jar
 
-  build-and-deploy-frontend:
+  build-frontend:
     docker:
       - image: cimg/node:16.20
     steps:
       - checkout
-      - setup_remote_docker
 
       # Cache dependencies
       - restore_cache:
@@ -47,11 +49,12 @@ jobs:
             - v1-frontend-dependencies-{{ checksum "frontend/package.json" }}
             - v1-frontend-dependencies-
 
-      # Install dependencies
+      # Install dependencies with clean slate
       - run:
-          name: Install Frontend Dependencies
+          name: Clean Install Frontend Dependencies
           command: |
             cd frontend
+            rm -rf node_modules package-lock.json
             npm install
 
       # Save dependency cache
@@ -60,35 +63,23 @@ jobs:
             - frontend/node_modules
           key: v1-frontend-dependencies-{{ checksum "frontend/package.json" }}
 
-      # Build frontend
+      # Build frontend with explicit environment variable
       - run:
           name: Build Frontend
           command: |
             cd frontend
+            export NODE_ENV=production
             export CI=false
             npm run build
+          no_output_timeout: 10m
 
-      # Deploy to CircleCI Pages
-      - run:
-          name: Deploy to CircleCI Pages
-          command: |
-            cd frontend/build
-            echo "chat-app.circleci.pages.dev" > CNAME
-            git init
-            git config user.email "ci-build@circleci.com"
-            git config user.name "CircleCI Build"
-            git add .
-            git commit -m "Deploy to CircleCI Pages"
-            git push -f https://${GITHUB_TOKEN}@github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}.git HEAD:gh-pages
+      # Store build artifacts
+      - store_artifacts:
+          path: frontend/build
 
 workflows:
   version: 2
-  build-and-deploy:
+  build-and-test:
     jobs:
       - build-backend
-      - build-and-deploy-frontend:
-          requires:
-            - build-backend
-          filters:
-            branches:
-              only: main
+      - build-frontend
