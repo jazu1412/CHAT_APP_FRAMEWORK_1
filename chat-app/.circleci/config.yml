@@ -1,7 +1,10 @@
 version: 2.1
 
+orbs:
+  node: circleci/node@5.1.0
+
 jobs:
-  build:
+  build-backend:
     docker:
       - image: cimg/openjdk:17.0
     steps:
@@ -10,8 +13,8 @@ jobs:
       # Cache dependencies
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "backend/pom.xml" }}
-            - v1-dependencies-
+            - v1-backend-dependencies-{{ checksum "backend/pom.xml" }}
+            - v1-backend-dependencies-
       
       # Build and test backend
       - run:
@@ -24,7 +27,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.m2
-          key: v1-dependencies-{{ checksum "backend/pom.xml" }}
+          key: v1-backend-dependencies-{{ checksum "backend/pom.xml" }}
       
       # Store test results
       - store_test_results:
@@ -34,8 +37,52 @@ jobs:
       - store_artifacts:
           path: backend/target/*.jar
 
+  build-frontend:
+    docker:
+      - image: cimg/node:18.17
+    steps:
+      - checkout
+
+      # Cache dependencies
+      - restore_cache:
+          keys:
+            - v1-frontend-dependencies-{{ checksum "frontend/package.json" }}
+            - v1-frontend-dependencies-
+
+      # Install dependencies
+      - run:
+          name: Install Frontend Dependencies
+          command: |
+            cd frontend
+            npm install
+
+      # Save dependency cache
+      - save_cache:
+          paths:
+            - frontend/node_modules
+          key: v1-frontend-dependencies-{{ checksum "frontend/package.json" }}
+
+      # Build frontend
+      - run:
+          name: Build Frontend
+          command: |
+            cd frontend
+            npm run build
+
+      # Run tests
+      - run:
+          name: Run Frontend Tests
+          command: |
+            cd frontend
+            npm test -- --watchAll=false
+
+      # Store build artifacts
+      - store_artifacts:
+          path: frontend/build
+
 workflows:
   version: 2
   build-and-test:
     jobs:
-      - build
+      - build-backend
+      - build-frontend
