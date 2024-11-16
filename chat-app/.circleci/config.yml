@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@4.7
-  java: circleci/java@1.0
+  java: cimg/openjdk@1.0
 
 jobs:
   build-backend:
