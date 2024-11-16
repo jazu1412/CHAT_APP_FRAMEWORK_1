@@ -1,9 +1,5 @@
 version: 2.1
 
-orbs:
-  node: circleci/node@4.7
-  java: cimg/openjdk@1.0
-
 jobs:
   build-backend:
     docker:
@@ -64,15 +60,5 @@ workflows:
   version: 2
   build-and-deploy:
     jobs:
-      - build-backend:
-          filters:
-            branches:
-              only:
-                - main
-                - develop
-      - build-frontend:
-          filters:
-            branches:
-              only:
-                - main
-                - develop
+      - build-backend
+      - build-frontend
