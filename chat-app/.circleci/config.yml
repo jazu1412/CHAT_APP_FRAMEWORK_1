@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  node: circleci/node@5.1.0
+
 jobs:
   build-backend:
     docker:
@@ -32,17 +35,9 @@ jobs:
       - image: cimg/node:16.13
     steps:
       - checkout
-      - restore_cache:
-          key: npm-deps-v1-{{ checksum "frontend/package-lock.json" }}
-      - run:
-          name: Install Dependencies
-          command: |
-            cd frontend
-            npm install
-      - save_cache:
-          paths:
-            - frontend/node_modules
-          key: npm-deps-v1-{{ checksum "frontend/package-lock.json" }}
+      - node/install-packages:
+          pkg-manager: npm
+          app-dir: frontend
       - run:
           name: Build Frontend
           command: |
