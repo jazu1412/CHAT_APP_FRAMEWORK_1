@@ -1,17 +1,41 @@
-version: 2
+version: 2.1
 
 jobs:
   build:
     docker:
-      - image: circleci/openjdk:17.0
+      - image: cimg/openjdk:17.0
     steps:
       - checkout
+      
+      # Cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "backend/pom.xml" }}
+            - v1-dependencies-
+      
+      # Build and test backend
       - run:
-          name: Test Configuration
-          command: echo "Testing CircleCI configuration"
+          name: Build and Test Backend
+          command: |
+            cd backend
+            mvn clean package
+      
+      # Save dependency cache
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "backend/pom.xml" }}
+      
+      # Store test results
+      - store_test_results:
+          path: backend/target/surefire-reports
+      
+      # Store artifacts
+      - store_artifacts:
+          path: backend/target/*.jar
 
 workflows:
   version: 2
-  build-workflow:
+  build-and-test:
     jobs:
       - build
