@@ -33,9 +33,16 @@ jobs:
       - store_test_results:
           path: backend/target/surefire-reports
       
-      # Store artifacts
+      # Store JAR artifact
+      - persist_to_workspace:
+          root: backend
+          paths:
+            - target/*.jar
+      
+      # Store artifacts in CircleCI
       - store_artifacts:
-          path: backend/target/*.jar
+          path: backend/target
+          destination: backend-build
 
   build-frontend:
     docker:
@@ -76,6 +83,7 @@ jobs:
       # Store build artifacts
       - store_artifacts:
           path: frontend/build
+          destination: frontend-build
 
 workflows:
   version: 2
